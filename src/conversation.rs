@@ -11,11 +11,11 @@ pub struct Conversation {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Tracker {
-    pub conversation_id: String,
-    pub slots: HashMap<String, String>,
+    pub conversation_id: Option<String>,
+    pub slots: HashMap<String, Option<String>>,
     pub latest_message: Message,
     pub latest_event_time: f64,
-    pub followup_action: String,
+    pub followup_action: Option<String>,
     pub paused: bool,
     pub events: Vec<Event>,
     pub latest_input_channel: String,
@@ -35,8 +35,9 @@ pub struct Domain {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct SlotProperty {
     pub auto_fill: bool,
-    pub initial_value: String,
+    pub initial_value: Option<String>,
     pub r#type: String,
+    #[serde(default)]
     pub values: Vec<String>
 }
 
@@ -50,11 +51,21 @@ pub struct Message {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Entity {
+    #[serde(default)]
     pub start: u32,
+    #[serde(default)]
     pub end: u32,
+    #[serde(default)]
     pub value: String,
+    #[serde(default)]
     pub entity: String,
-    pub confidence: f32
+    #[serde(default)]
+    pub confidence: f32,
+    pub confidence_entity: Option<f32>,
+    #[serde(default)]
+    pub extractor: String,
+    #[serde(default)]
+    pub additional_info: HashMap<String, String>
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -63,21 +74,24 @@ pub struct Intent {
     pub name: String
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Event {
     pub event: String,
-    pub timestamp: u32
+    pub timestamp: Option<f32>,
+    pub name: Option<String>,
+    #[serde(default)]
+    pub value: String
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Action {
     pub action_name: String,
-    pub action_text: String
+    pub action_text: Option<String>
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Loop {
-    pub name: String
+    pub name: Option<String>
 }
 
 #[derive(Debug, Deserialize, Serialize)]
