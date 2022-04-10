@@ -10,4 +10,6 @@ FROM gcr.io/distroless/cc-debian10
 
 COPY --from=build /usr/local/cargo/bin/rasa-action-server /usr/local/bin/rasa-action-server
 
+EXPOSE 8080
+
 CMD ["rasa-action-server"]
