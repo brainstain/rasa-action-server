@@ -1,13 +1,13 @@
 FROM rust:1.60 as build
 ENV PKG_CONFIG_ALLOW_CROSS=1
 
-WORKDIR /usr/src/api-service
+WORKDIR /usr/src/rasa-action-server
 COPY . .
 
 RUN cargo install --path .
 
 FROM gcr.io/distroless/cc-debian10
 
-COPY --from=build /usr/local/cargo/bin/api-service /usr/local/bin/api-service
+COPY --from=build /usr/local/cargo/bin/rasa-action-server /usr/local/bin/rasa-action-server
 
-CMD ["api-service"]
+CMD ["rasa-action-server"]
